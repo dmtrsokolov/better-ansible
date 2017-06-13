@@ -9,48 +9,64 @@ class Play implements AnsibleEntity {
     List<Task> tasks = []
     List<Handler> handlers = []
 
-    void vars(@DelegatesTo(Play) Closure closure) {
-        closure.delegate = this
+    void vars(@DelegatesTo(Variables) Closure closure) {
+        Variables variables = new Variables(play: this)
+        closure.delegate = variables
         closure()
     }
 
-    void variable(Var variable) {
-        this.vars << variable
-    }
-
-    void variable(String name, Object value) {
-        this.vars << new Var(name: name, value: value)
-    }
-
-    void tasks(@DelegatesTo(Play) Closure closure) {
-        closure.delegate = this
+    void tasks(@DelegatesTo(Tasks) Closure closure) {
+        Tasks tasks = new Tasks(play: this)
+        closure.delegate = tasks
         closure()
     }
 
-    void task(Task task) {
-        this.tasks << task
-    }
-
-    void task(@DelegatesTo(Task) Closure closure) {
-        Task task = new Task()
-        this.tasks << task
-        closure.delegate = task
+    void handlers(@DelegatesTo(Handlers) Closure closure) {
+        Handlers handlers = new Handlers(play: this)
+        closure.delegate = handlers
         closure()
     }
 
-    void handlers(@DelegatesTo(Play) Closure closure) {
-        closure.delegate = this
-        closure()
+    static class Variables {
+        Play play
+
+        void variable(Var variable) {
+            play.vars << variable
+        }
+
+        void variable(String name, Object value) {
+            play.vars << new Var(name: name, value: value)
+        }
+
     }
 
-    void handler(Handler handler) {
-        this.handlers += handler
+    static class Tasks {
+        Play play
+
+        void task(Task task) {
+            play.tasks << task
+        }
+
+        void task(@DelegatesTo(Task) Closure closure) {
+            Task task = new Task()
+            play.tasks << task
+            closure.delegate = task
+            closure()
+        }
     }
 
-    void handler(@DelegatesTo(Handler) Closure closure) {
-        Handler handler = new Handler()
-        this.handlers += handler
-        closure.delegate = handler
-        closure()
+    static class Handlers {
+        Play play
+
+        void handler(Handler handler) {
+            play.handlers += handler
+        }
+
+        void handler(@DelegatesTo(Handler) Closure closure) {
+            Handler handler = new Handler()
+            play.handlers += handler
+            closure.delegate = handler
+            closure()
+        }
     }
 }

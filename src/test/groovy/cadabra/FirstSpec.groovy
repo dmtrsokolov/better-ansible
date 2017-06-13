@@ -120,7 +120,7 @@ class FirstSpec extends Specification {
         Yaml yaml = new Yaml(representer, options)
         Inventory inventory = new Inventory(hosts: [id])
 
-        new File(workingDir, 'main.yml').wri    te(yaml.dump(playbook))
+        new File(workingDir, 'main.yml').write(yaml.dump(playbook))
         def inventoryFile = new File(workingDir,'inventory/main.yml')
         def inventoryDir = inventoryFile.getParentFile()
         if(!inventoryFile.exists()) {
