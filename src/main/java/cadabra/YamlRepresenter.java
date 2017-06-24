@@ -19,6 +19,7 @@ public class YamlRepresenter extends Representer {
         this.representers.put(Play.class, new RepresentPlay());
         this.representers.put(Var.class, new RepresentVar());
         this.representers.put(Task.class, new RepresentTask());
+        this.representers.put(Dependency.class, new RepresentDependency());
         this.addClassTag(Task.class, Tag.MAP);
         this.addClassTag(Handler.class, Tag.MAP);
     }
@@ -73,6 +74,28 @@ public class YamlRepresenter extends Representer {
             map.put(task.getCode(), task.getArgs());
             if (task.getNotify() != null) {
                 map.put("notify", new String[] {task.getNotify().call().getName()});
+            }
+            return representMapping(Tag.MAP, map, false);
+        }
+    }
+
+    private class RepresentDependency implements Represent {
+
+        @Override
+        public Node representData(Object data) {
+            Dependency dependency = (Dependency) data;
+            Map<String, String> map = new LinkedHashMap<>();
+            if (dependency.getSrc() != null) {
+                map.put("src", dependency.getSrc());
+            }
+            if (dependency.getSrc() != null) {
+                map.put("scm", dependency.getScm());
+            }
+            if (dependency.getVersion() != null) {
+                map.put("version", dependency.getVersion());
+            }
+            if (dependency.getName() != null) {
+                map.put("name", dependency.getName());
             }
             return representMapping(Tag.MAP, map, false);
         }
