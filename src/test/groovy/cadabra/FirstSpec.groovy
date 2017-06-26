@@ -1,7 +1,9 @@
 package cadabra
 
+import cadabra.ansible.Dependency
 import cadabra.ansible.Inventory
 import cadabra.ansible.Playbook
+import cadabra.ansible.Role
 import com.spotify.docker.client.DefaultDockerClient
 import com.spotify.docker.client.DockerClient
 import com.spotify.docker.client.messages.*
@@ -63,6 +65,18 @@ class FirstSpec extends Specification {
 
     def cleanupSpec() {
         docker.close()
+    }
+
+    def dependencyTest() {
+        expect:
+        def dependency = new Dependency(
+                name: 'consul',
+                src: 'git@github.com:infacloud/ansible-role-consul.git',
+                scm: 'git',
+                version: 'master'
+        )
+        Dependency.resolveDependencies([dependency], "/tmp/roles")
+        Role.generate('consul','/tmp/roles/consul/', '/Users/dsokolov/git/better-ansible/generated')
     }
 
     @Unroll

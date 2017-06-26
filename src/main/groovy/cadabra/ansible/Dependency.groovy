@@ -14,16 +14,19 @@ class Dependency implements AnsibleEntity {
     String name
 
 
-    static void resolveDependencies(List<Dependency> dependencies, String rolesPath) {
+    static boolean resolveDependencies(List<Dependency> dependencies, String rolesPath) {
         DumperOptions options = new DumperOptions()
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK)
         YamlRepresenter representer = new YamlRepresenter()
         Yaml yaml = new Yaml(representer, options)
 
-        File dependenciesFile = Files.createTempFile('dependencies', 'yml').toFile()
+        File dependenciesFile = Files.createTempFile('dependencies', '.yml').toFile()
+        println(dependenciesFile.absolutePath)
         dependenciesFile.write(yaml.dump(dependencies))
         dependenciesFile.deleteOnExit()
 
-//        "ansible-galaxy  -vvvv".execute().text
+        def result = "ansible-galaxy install -r ${dependenciesFile.absolutePath} --roles-path $rolesPath -vvvv".execute()
+        println result.text
+        return result.exitValue() == 0
     }
 }
