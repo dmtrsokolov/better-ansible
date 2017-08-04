@@ -1,0 +1,23 @@
+---
+# Primitive types
+fake_str: /etc/fake.d
+fake_quoted_str: "{{fake_str}}/client"
+fake_int: 7
+fake_bool: trueß
+
+# Empty map, list
+fake_empty_map: {}
+fake_empty_list: []
+
+# Map and lists
+fake_fibonaci_list: [1, 2, 3, 5, 8]
+fake_abc_list:
+  - a
+  - b
+  - c
+fake_country_map:
+  russia: moscow
+  canada: ottawa
+  germany: berlin
+
+fake_currency_map: {russia: 'rub', canada: 'cad', germany: 'eur'}

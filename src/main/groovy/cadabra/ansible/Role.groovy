@@ -57,7 +57,14 @@ class Role implements AnsibleEntity {
                     } else {
                         Map<Class, List> groups = list.groupBy { it.class}
                         if (groups.size() == 1) {
-                            builder.addField(fieldName, "List<${groups.entrySet().first().getKey().name.replaceFirst('java.lang.', '')}>")
+                            Class aClass = list.first().class
+                            if (aClass instanceof Map) {
+                                String className = fieldName.capitalize()
+                                mapToClass(className, list.first() as Map, dest)
+                                builder.addField(fieldName, className)
+                            } else {
+                                builder.addField(fieldName, "List<${aClass.name.replaceFirst('java.lang.', '')}>")
+                            }
                         } else {
                             builder.addField(fieldName, 'List<Object>')
                         }

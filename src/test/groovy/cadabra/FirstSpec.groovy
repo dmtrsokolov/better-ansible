@@ -1,9 +1,8 @@
-package cadabra
+package cadabraß
 
-import cadabra.ansible.Dependency
+import cadabra.YamlRepresenter
 import cadabra.ansible.Inventory
 import cadabra.ansible.Playbook
-import cadabra.ansible.Role
 import com.spotify.docker.client.DefaultDockerClient
 import com.spotify.docker.client.DockerClient
 import com.spotify.docker.client.messages.*
@@ -13,7 +12,7 @@ import org.yaml.snakeyaml.Yaml
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.spotify.docker.client.DockerClient.ListImagesParam.*
+import static com.spotify.docker.client.DockerClient.ListImagesParam.byName
 
 class FirstSpec extends Specification {
 
@@ -27,7 +26,7 @@ class FirstSpec extends Specification {
             docker.pull(imageName)
         }
         final String[] ports = ["80", "22"]
-        final Map<String, List<PortBinding>> portBindings = new HashMap<>();
+        final Map<String, List<PortBinding>> portBindings = new HashMap<>()
         for (String port : ports) {
             List<PortBinding> hostPorts = new ArrayList<>()
             hostPorts.add(PortBinding.of("0.0.0.0", port))
@@ -65,18 +64,6 @@ class FirstSpec extends Specification {
 
     def cleanupSpec() {
         docker.close()
-    }
-
-    def dependencyTest() {
-        expect:
-        def dependency = new Dependency(
-                name: 'consul',
-                src: 'git@github.com:infacloud/ansible-role-consul.git',
-                scm: 'git',
-                version: 'master'
-        )
-        Dependency.resolveDependencies([dependency], "/tmp/roles")
-        Role.generate('consul','/tmp/roles/consul/', '/Users/dsokolov/git/better-ansible/generated')
     }
 
     @Unroll
