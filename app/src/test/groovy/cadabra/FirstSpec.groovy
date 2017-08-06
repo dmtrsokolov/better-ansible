@@ -1,10 +1,14 @@
 package cadabra
 
-import cadabra.ansible.Inventory
-import cadabra.ansible.Playbook
+import ansible.Inventory
+import ansible.Playbook
 import com.spotify.docker.client.DefaultDockerClient
 import com.spotify.docker.client.DockerClient
-import com.spotify.docker.client.messages.*
+import com.spotify.docker.client.messages.ContainerConfig
+import com.spotify.docker.client.messages.ContainerCreation
+import com.spotify.docker.client.messages.ContainerInfo
+import com.spotify.docker.client.messages.HostConfig
+import com.spotify.docker.client.messages.PortBinding
 import org.apache.commons.io.FileUtils
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml

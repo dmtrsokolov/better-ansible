@@ -1,4 +1,4 @@
-package cadabra.ansible
+package ansible
 
 import groovy.transform.Canonical
 

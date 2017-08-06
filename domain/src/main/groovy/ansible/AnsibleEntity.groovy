@@ -1,4 +1,4 @@
-package cadabra.ansible
+package ansible
 
 interface AnsibleEntity {
 

@@ -1,6 +1,12 @@
 package cadabra;
 
-import cadabra.ansible.*;
+import ansible.AnsibleEntity;
+import ansible.Dependency;
+import ansible.Handler;
+import ansible.Play;
+import ansible.Playbook;
+import ansible.Task;
+import ansible.Var;
 import org.yaml.snakeyaml.introspector.Property;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.NodeTuple;

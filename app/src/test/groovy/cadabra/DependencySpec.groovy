@@ -1,6 +1,6 @@
 package cadabra
 
-import cadabra.ansible.Dependency
+import ansible.Dependency
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -15,6 +15,7 @@ class DependencySpec extends Specification{
                 scm: 'git',
                 version: 'master'
         )
-        Dependency.resolveDependencies([dependency], "/Users/dsokolov/git/better-ansible/generated")
-//        Role.generate('consul','/Users/dsokolov/git/better-ansible/generated/consul/', '/Users/dsokolov/git/better-ansible/generated')
+        String destPath = GenerationSpec.class.getClassLoader().getResource('.').getFile() + 'generated'
+        DependenciesResolver.resolveDependencies([dependency], destPath)
+        RoleGenerator.generate('consul',"${destPath}/consul/", destPath)
     }}

@@ -1,12 +1,11 @@
-package cadabra.ansible
+package cadabra
 
+import ansible.ClassBuilder
 import groovy.transform.CompileStatic
 import org.yaml.snakeyaml.Yaml
 
 @CompileStatic
-class Role implements AnsibleEntity {
-    String name
-    List<Task> tasks
+class RoleGenerator {
 
     static String toCamelCase( String text, boolean capitalized = false ) {
         text = text.replaceAll( "(_)([A-Za-z0-9])", { List<String> it -> it[2].toUpperCase() } )
@@ -21,7 +20,7 @@ class Role implements AnsibleEntity {
         Yaml yaml = new Yaml()
         new File(path + '/defaults/main.yml').withReader { reader ->
             Map<String, Object> vars = yaml.loadAs(reader, Map.class)
-            ClassBuilder builder = mapToClass(name.capitalize() + 'Role', vars, dest)
+            mapToClass(name.capitalize() + 'Role', vars, dest)
         }
     }
 

@@ -1,18 +1,14 @@
-package cadabra.ansible
+package cadabra
 
-import cadabra.YamlRepresenter
+import ansible.Dependency
+import groovy.transform.CompileStatic
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 
 import java.nio.file.Files
 
-
-class Dependency implements AnsibleEntity {
-    String src
-    String scm
-    String version
-    String name
-
+@CompileStatic
+class DependenciesResolver {
 
     static boolean resolveDependencies(List<Dependency> dependencies, String rolesPath) {
         DumperOptions options = new DumperOptions()
