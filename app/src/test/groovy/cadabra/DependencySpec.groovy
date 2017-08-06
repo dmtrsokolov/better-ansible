@@ -15,7 +15,7 @@ class DependencySpec extends Specification{
                 scm: 'git',
                 version: 'master'
         )
-        String destPath = GenerationSpec.class.getClassLoader().getResource('.').getFile() + 'generated'
+        String destPath = DependencySpec.class.getClassLoader().getResource('.').getFile() + 'generated'
         DependenciesResolver.resolveDependencies([dependency], destPath)
         RoleGenerator.generate('consul',"${destPath}/consul/", destPath)
     }}

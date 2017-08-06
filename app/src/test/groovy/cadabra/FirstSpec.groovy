@@ -71,7 +71,7 @@ class FirstSpec extends Specification {
 
     @Unroll
     def test() {
-        expect:
+        when:
         def playbook = Playbook.of {
             play {
                 hosts = id
@@ -111,7 +111,7 @@ class FirstSpec extends Specification {
             }
         }
 
-        def workingDir = new File('test')
+        def workingDir = new File(FirstSpec.class.getClassLoader().getResource('.').getFile() + 'test')
 
         if (workingDir.exists()) {
             workingDir.deleteDir()
@@ -131,8 +131,11 @@ class FirstSpec extends Specification {
             inventoryDir.mkdirs()
         }
         inventoryFile.write(inventory.toString())
-        FileUtils.copyDirectory(new File('src/test/resources'), new File('test'))
-        def result = "ansible-playbook test/main.yml -i test/inventory/main.yml -vvvv".execute().text
-        println(result)
+        File srv = new File(FirstSpec.class.getClassLoader().getResource('firstSpec').getFile())
+        FileUtils.copyDirectory(srv, workingDir)
+        def result = "ansible-playbook ${workingDir}/main.yml -i ${workingDir}/inventory/main.yml -vvvv".execute()
+        then:
+        !result.text.isEmpty()
+        result.exitValue() == 0
     }
 }
